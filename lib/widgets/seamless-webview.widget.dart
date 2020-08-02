@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class SeamlessWebView extends StatefulWidget {
-  String content;
+  final String content;
 
   SeamlessWebView(this.content);
 
@@ -13,13 +13,25 @@ class SeamlessWebView extends StatefulWidget {
 }
 
 class _SeamlessWebViewState extends State<SeamlessWebView> {
+  double _height = 100;
+  WebViewController _controller;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+      height: _height,
       child: WebView(
         initialUrl: "https://shubhamschahar.com",
+        javascriptMode: JavascriptMode.unrestricted,
+        onPageFinished: (url) async {
+          double height = double.parse(await _controller
+              .evaluateJavascript("document.documentElement.scrollHeight;"));
+          setState(() {
+            _height = height;
+          });
+        },
         onWebViewCreated: (WebViewController controller) async {
+          _controller = controller;
           await controller.loadUrl(Uri.dataFromString(
                   _getHTMLPageFromString(widget.content),
                   mimeType: 'text/html',

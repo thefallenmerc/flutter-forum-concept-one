@@ -6,7 +6,7 @@ Future<ForumData> fetchForum() async {
   final response = await http
       .get("", headers: {
     "Authorization":
-        "Bearer "
+        ""
   });
   return ForumData.fromJson(json.decode(response.body));
 }

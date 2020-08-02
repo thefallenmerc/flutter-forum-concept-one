@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepOrange,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         primaryColor: Color(0xff421840),
+        backgroundColor: Colors.white,
       ),
       home: Forum(title: "Forum"),
     );
@@ -34,6 +35,7 @@ class Forum extends StatefulWidget {
 
 class _ForumState extends State<Forum> {
   ForumData forumData;
+  int isReplying = -1;
 
   @override
   void initState() {
@@ -49,11 +51,22 @@ class _ForumState extends State<Forum> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SafeArea(
         child: forumData != null
             ? ForumBody(forumData: forumData)
-            : Text("Loading"),
+            : _showLoading(),
       ),
     );
   }
+}
+
+_showLoading() {
+  return Center(
+    child: Container(
+      width: 33,
+      height: 33,
+      child: CircularProgressIndicator(),
+    ),
+  );
 }
